@@ -13,13 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
-            $table->id();
-            $table->string('nama');
-            $table->string('username')->unique();
-            $table->string('password');
-            $table->rememberToken();
-            $table->timestamps();
+        Schema::table('murids', function (Blueprint $table) {
+            $table->foreign('kelas_id','fk_kelas_to_murids')->references('id')->on('kelas')
+            ->onUpdate('CASCADE')->onDelete('CASCADE');
         });
     }
 
@@ -30,6 +26,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users');
+        Schema::table('murids', function (Blueprint $table) {
+            $table->dropForeign('fk_kelas_to_murids');
+        });
     }
 };

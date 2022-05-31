@@ -15,6 +15,11 @@ return new class extends Migration
     {
         Schema::create('murids', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('nis_id')->index('fk_nis_to_murids');
+            $table->foreignId('kelas_id')->index('fk_kelas_to_murids');
+            $table->string('nama');
+            $table->string('password');
+            $table->string('foto');
             $table->timestamps();
         });
     }
