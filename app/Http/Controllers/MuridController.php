@@ -6,6 +6,9 @@ use App\Models\Nis;
 use App\Models\Kelas;
 use App\Models\Murid;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 
 class MuridController extends Controller
 {
@@ -47,7 +50,36 @@ class MuridController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'foto'     => 'required|file|image|mimes:jpeg,png,jpg,svg|max:2048',
+            'nama'    => 'required',
+            'kelas_id'    => 'required',
+            'nis_id'    => 'required',
+            'password'   => 'nullable',
+        ]);
+        
+        if ($validator->fails()) {
+            return redirect()->route('murid.create')
+            ->with('failed', 'Murid Create Not Success');
+        }
+
+        // upload image
+        $file = $request->file('foto');
+        $file_name = $file->hashName();
+        $file_path = storage_path('app/public/uploads/murid');
+        $file->move($file_path, $file_name);
+    
+        //create user
+        Murid::create([
+            'foto'     => $file_name,
+            'nama' => $request['nama'],
+            'kelas_id' => $request['kelas_id'],
+            'nis_id' => $request['nis_id'],
+            'password' => Hash::make($request['password']),
+        ]);
+
+        return redirect()->route('murid.index')
+            ->with('success', 'Murid Created successfully');
     }
 
     /**
@@ -90,8 +122,13 @@ class MuridController extends Controller
      * @param  \App\Models\Murid  $murid
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Murid $murid)
+    public function destroy( $id)
     {
-        //
+        //delete image
+        $murid = Murid::find($id);
+        Storage::delete('public/uploads/murid/'. $murid->foto);
+        $murid->delete();
+
+        return redirect()->route('murid.index')->with(['success' => 'Data Berhasil Dihapus!']);
     }
 }
