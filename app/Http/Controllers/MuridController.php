@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Nis;
+use App\Models\Kelas;
 use App\Models\Murid;
 use Illuminate\Http\Request;
 
@@ -14,7 +16,10 @@ class MuridController extends Controller
      */
     public function index()
     {
-        //
+        $murid = Murid::with('nis','kelas')->latest()->get();
+        
+        return view('murid.index', compact('murid'))
+            ->with('i', (request()->input('page', 1) - 1) * 5);
     }
 
     /**
@@ -24,7 +29,14 @@ class MuridController extends Controller
      */
     public function create()
     {
-        //
+        $murid = new Murid;
+        $nis = Nis::all();
+        $kelas = Kelas::all();
+        return view('murid.tambah', compact(
+            'kelas',
+            'murid',
+            'nis'
+        ));
     }
 
     /**

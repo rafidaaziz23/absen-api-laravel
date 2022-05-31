@@ -14,7 +14,10 @@ class NisController extends Controller
      */
     public function index()
     {
-        //
+        $nis = Nis::latest()->get();
+        
+        return view('nis.index', compact('nis'))
+            ->with('i', (request()->input('page', 1) - 1) * 5);
     }
 
     /**
@@ -24,7 +27,10 @@ class NisController extends Controller
      */
     public function create()
     {
-        //
+        $nis = new Nis;
+        return view('nis.tambah', compact(
+            'nis',
+        ));
     }
 
     /**
@@ -35,7 +41,12 @@ class NisController extends Controller
      */
     public function store(Request $request)
     {
-        //
+         Nis::create([
+            'nomer'      =>  $request['nomer'],
+        ]);
+
+        return redirect()->route('nis.index')
+            ->with('success', 'nis Created successfully');
     }
 
     /**
@@ -78,8 +89,12 @@ class NisController extends Controller
      * @param  \App\Models\Nis  $nis
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Nis $nis)
+    public function destroy($id)
     {
-        //
+        $nis = Nis::find($id);
+        $nis->delete();
+        
+        return redirect()->route('nis.index')
+            ->with('success', 'nis deleted successfully');
     }
 }

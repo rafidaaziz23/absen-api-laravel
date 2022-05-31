@@ -19,7 +19,7 @@ class Murid extends Model
     ];
 
     public function nis(){
-        return $this->hasOne(Nis::class,'nis_id');
+        return $this->hasOne(Nis::class,'id','nis_id');
     }
 
     public function izin(){
@@ -28,5 +28,9 @@ class Murid extends Model
 
     public function present(){
         return $this->hasMany(Present::class,'murid_id');
+    }
+
+     public function kelas(){
+        return $this->hasOne(Kelas::class,'id','kelas_id');
     }
 }

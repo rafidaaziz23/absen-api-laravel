@@ -18,7 +18,5 @@ class Kelas extends Model
         return $this->belongsTo(Jurusan::class, 'jurusan_id','id');
     }
 
-    public function murid(){
-        return $this->hasMany(Murid::class,'kelas_id');
-    }
+   
 }

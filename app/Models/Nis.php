@@ -12,4 +12,5 @@ class Nis extends Model
     protected $fillable = [
         'nomer',
     ];
+    
 }

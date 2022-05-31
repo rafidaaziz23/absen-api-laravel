@@ -1,8 +1,10 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\NisController;
 use App\Http\Controllers\KelasController;
 use App\Http\Controllers\JurusanController;
+use App\Http\Controllers\MuridController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,5 +23,7 @@ Route::get('/', function () {
 
 Route::resource('jurusan', JurusanController::class);
 Route::resource('kelas', KelasController::class);
+Route::resource('nis', NisController::class);
+Route::resource('murid',MuridController::class);
 
 

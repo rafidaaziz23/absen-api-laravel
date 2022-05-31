@@ -68,12 +68,12 @@
           <span>Kelas</span></a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="">
+        <a class="nav-link" href="/nis">
           <i class="fas fa-fw fa-table"></i>
           <span>NIS</span></a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="">
+        <a class="nav-link" href="/murid">
           <i class="fas fa-fw fa-table"></i>
           <span>Murid</span></a>
       </li>

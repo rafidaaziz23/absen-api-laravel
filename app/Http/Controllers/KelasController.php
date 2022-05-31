@@ -44,9 +44,13 @@ class KelasController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request->all());
+
+        $jurusan_kode = Jurusan::where(['id' => $request['jurusan_id']])->first();
+        $jurusan = $jurusan_kode['jurusan_kode'];
+        $kelas = $request['kelas'] . ' - ' . $jurusan;
+
         Kelas::create([
-            'kelas'           =>  $request['kelas'],
+            'kelas'           =>  $kelas,
             'jurusan_id'      =>  $request['jurusan_id'],
         ]);
 
@@ -105,10 +109,12 @@ class KelasController extends Controller
      * @param  \App\Models\Kelas  $kelas
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Kelas $kelas)
+    public function destroy($id)
     {
+        // Kelas::where('id', $kelas->id)->delete();
+        $kelas = Kelas::find($id);
         $kelas->delete();
-
+        
         return redirect()->route('kelas.index')
             ->with('success', 'Kelas deleted successfully');
     }
