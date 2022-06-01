@@ -8,6 +8,7 @@ use App\Models\Kelas;
 use App\Models\Murid;
 use App\Models\Nis;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
 class AuthenticationController extends Controller
@@ -22,19 +23,19 @@ class AuthenticationController extends Controller
         ]);
 
         if ($input->fails()) {
-            return new Json(422, 'Error', $input->errors());
+            return new Json(false, 'Error', $input->errors());
         }
 
         $cekNis = Nis::where('nomer', $request->nis)->first();
 
         if (is_null($cekNis)) {
-            return new Json('404', 'Nis tidak ditemukan', $cekNis);
+            return new Json(false, 'Nis tidak ditemukan', $cekNis);
         }
 
         $cekKelas = Kelas::where('kelas', $request->kelas)->first();
 
         if (is_null($cekKelas)) {
-            return new Json('404', 'Kelas tidak ditemukan', $cekKelas);
+            return new Json(false, 'Kelas tidak ditemukan', $cekKelas);
         }
 
         $createMurid = Murid::create([
@@ -44,6 +45,32 @@ class AuthenticationController extends Controller
             'password' => bcrypt($request->password),
         ]);
 
-        return new Json('200', 'Created', $createMurid);
+        return new Json(true, 'Created', $createMurid);
+    }
+
+    public function login(Request $request)
+    {
+        $input = Validator::make($request->all(), [
+            'password' => 'required',
+            'nis' => 'required',
+        ]);
+
+        if ($input->fails()) {
+            return new Json(false, 'Error', $input->errors());
+        }
+
+        $cekNis = Nis::where('nomer', $request->nis)->first();
+
+        if (!$cekNis) {
+            return new Json(false, 'Nis tidak ditemukan', $cekNis);
+        }
+
+        $user = Murid::where('nis_id', $cekNis->id)->first();
+
+        if (!$user || !Hash::check($request->password, $user->password)) {
+            return new Json(false, 'Password Salah', null);
+        }
+
+        return new Json(true, 'Login Sukses', $user);
     }
 }
