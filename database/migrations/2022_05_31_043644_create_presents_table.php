@@ -17,7 +17,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('murid_id')->index('fk_present_to_murid');
             $table->enum('status',['Check In','Check Out']);
-            $table->dateTime('present_at');
+            $table->time('present_at');
+            $table->date('present_day');
             $table->timestamps();
         });
     }

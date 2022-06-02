@@ -14,4 +14,10 @@ class Present extends Model
         'status',
         'present_at',
     ];
+
+    public function murid(){
+        return $this->belongsTo(Murid::class,'murid_id','id');
+    }
+
+
 }

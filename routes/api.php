@@ -1,10 +1,12 @@
 <?php
 
-use App\Http\Controllers\API\Auth\AuthenticationController;
-use App\Http\Controllers\API\MuridController;
 use App\Http\Resources\Json;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\API\IzinController;
+use App\Http\Controllers\API\MuridController;
+use App\Http\Controllers\API\PresentController;
+use App\Http\Controllers\API\Auth\AuthenticationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,3 +31,13 @@ Route::post('/register', [AuthenticationController::class, 'register']);
 Route::post('/login', [AuthenticationController::class, 'login']);
 
 Route::get('/murid/{id}', [MuridController::class, 'getById']);
+
+Route::post('/izin/{id}', [IzinController::class,'doIzin']);
+
+Route::post('/izin-file/{id}', [IzinController::class,'uploadIzin']);
+
+Route::post('/present-in/{id}', [PresentController::class,'checkIn']);
+
+Route::post('/present-out/{id}', [PresentController::class,'checkOut']);
+
+Route::get('/presents/{id}', [PresentController::class,'checkById']);
